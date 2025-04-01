@@ -8,36 +8,48 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v4  # Updated to v4
+      - uses: actions/checkout@v4
 
-      # used to cache dependencies with a timeout
+      # Get date for cache key
       - name: Get Date
         id: get-date
         run: |
           echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
         shell: bash
 
+      # Cache Buildozer global directory
       - name: Cache Buildozer global directory
-        uses: actions/cache@v4  # Updated to v4
+        uses: actions/cache@v4
         with:
           path: .buildozer_global
           key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
+      # Cache Buildozer build directory
       - name: Cache Buildozer build directory
-        uses: actions/cache@v4  # Updated to v4
+        uses: actions/cache@v4
         with:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
-      - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
-        id: buildozer
-        with:
-          command: buildozer android debug
-          buildozer_version: stable
+      # Build the Buildozer container manually
+      - name: Build Buildozer Docker Image
+        run: |
+          docker build -t my-buildozer -f- . <<EOF
+          FROM kivy/buildozer:0.11.0
+          WORKDIR /app
+          EOF
 
+      # Run Buildozer in the container
+      - name: Build with Buildozer
+        id: buildozer
+        run: |
+          docker run --rm -v $(pwd):/app my-buildozer buildozer android debug
+          # Set output filename (adjust path as needed)
+          echo "filename=$(ls bin/*.apk)" >> $GITHUB_OUTPUT
+
+      # Upload artifacts
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: package
           path: ${{ steps.buildozer.outputs.filename }}
