@@ -1,4 +1,4 @@
-# project-1
+# Number Systems converter app
 Number System Converter App Documentation
 Introduction
 The Number System Converter App is a school assignment project designed to run on Android devices. 
@@ -10,7 +10,7 @@ The Number System Converter App operates as a mobile application on Android devi
 simple and intuitive user interface for converting numbers between various number systems. Below, 
 we'll explain how the app works step by step:
 1. Downloading and Installing the App
-- The app is available for downloading by clicking this link: https://github.com/DevsyCodeLabs/project1/suites/18096241709/artifacts/1042935439
+- The app is available for downloading by clicking this link: 
 - Upon Downloading, users can install the app on their android phones. The app supports Android 
 version 5 and above.
 2. Launching the App
@@ -62,7 +62,7 @@ The Number System Converter App supports the following number system conversions
 - Hexadecimal to Octal
 Source Code and app resources
 The app resources and source code are available at the official github repository. You can check them out 
-by following this link: https://github.com/DevsyCodeLabs/project-1
+by following this link: https://github.com/IsaacIzzoh/numbersystemsconverterapp
 Conclusion
 The Number System Converter App is an Android application created as a school assignment project. It 
 simplifies the process of converting numbers between various number systems and offers an efficient 
